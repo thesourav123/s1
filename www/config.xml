@@ -6,7 +6,7 @@
         id        = "com.phonegap.geolocation"
         version   = "1.0.0">
 
-    <name>Device</name>
+    <name>Akbar Map</name>
 
     <description>
       Geo Location.
