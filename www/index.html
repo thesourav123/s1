@@ -2,106 +2,150 @@
 <html>
 <head>
 	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width;" />
-	<title>You are here...</title>
-	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=752980794592.apps.googleusercontent.com&sensor=true"></script>
+	<title>UMPIRE</title>	
 	<script type="text/javascript" src="phonegap.js"></script>
-	<script type="text/javascript">
-		// Set the event listener to run when the device is ready
-	document.addEventListener(
-					"deviceready", onDeviceReady, false);
+	@@ -0,0 +1,144 @@
+ <HTML>
+  <BODY>
+  <table border =1 width="100%">
+							 <tr>
+								  <th >RUN </th>
+								   <th >Over</th>
+								   <th >wicket</th>
+                                   <th >Ball</th>
+							 </tr>
+							  <tr>
+								  <td id="runtd" ></td>
+								   <td id="Overtd" ></td>
+								   <td id="wictd" ></td>
+                                   <td id="balltd" ></td>
+                                   
+							 </tr>
+							 <td>
+  </table>
+  <table width="100%">
+		<tr>
+		<td >
+        <button  VALUE="0" Onclick="add(0)" >0</button>
+     <button VALUE="1" Onclick="add(1)" >1</button>
+      <button  VALUE="2" Onclick="add(2)" >2</button>
+       <button  VALUE="3" Onclick="add(3)" >3</button>
+      <button VALUE="4" Onclick="add(4)">4</button>
+     <button VALUE="6" Onclick="add(6)">6</button>
+	 </td>
+	 </tr>
+     <tr>
+		<td>
+        <button  VALUE="WC" Onclick="extras('wk')" cellspan="2" >Wicket</button>
+     	<button VALUE="WI" Onclick="extras('wide')" cellspan="2" >Wide</button>
+     	 <button  VALUE="NOB" Onclick="extras('noball')"  cellspan="2">NoBall</button>
+       
+	 </td>
+	 </tr>
+      <tr>
+		<td>
+        <button  VALUE="WC" Onclick="nextOver()" cellspan="2" >Next Over</button>
+     	<button VALUE="WI" Onclick="nextIng()" cellspan="2" >Next Inings</button>
+        <button VALUE="minusRun" Onclick="minusRun()" cellspan="2" >Minus Run</button>
+        <button VALUE="minusBall" Onclick="minusBall()" cellspan="2" >Minus Ball</button>
+     	 
+       <input type="image" src="submit.gif" />
+	 </td>
+	 </tr>
+     </table>
+     <div class="circle"></div>
+     <style >
+    
+   .circle {
+	border-radius: 50%;
+	width: 200px;
+	height: 200px; 
+	/* width and height can be anything, as long as they're equal */
+
+
+}
+     </style>
+ </BODY>
+ <script>
+ 
+ function minusBall()
+ {
+ }
+ function minusRun()
+ {
+ }
+ function nextOver()
+ {
+	 if(confirm("Over Finished ?"))
+	 {
+		 
+		 totover = totover +1;
+			document.getElementById('Overtd').innerHTML =totover;
+	 }
+	
+ }
+ 	var totrun =0;
+ 	var totball =0;
+   	var totwic =0;
+    var totover =0;
+	var nbprev =0;
+	var prevRun = 0;
+	var prevBall = 0;
+	
+	function extras(run)
+	{
 		
-	// The device is ready, so let's 
-	// obtain the current geolocation data
-	function onDeviceReady() {
-		navigator.geolocation.getCurrentPosition(
-			onSuccess, 
-			onError
-		);
+	 if(run == 'wk')
+	 {
+		 totwic = totwic +1;
+		 document.getElementById('wictd').innerHTML =totwic;
+		 totball = totball +1;
+		 document.getElementById('balltd').innerHTML =totball;
+	 }
+	 else  if(run == 'wide')
+	 {
+		  totrun = totrun+1;
+		 document.getElementById('runtd').innerHTML =totrun;
+	 }
+	  else  if(run == 'noball')
+	 {
+		  totrun = totrun+1;
+		 document.getElementById('runtd').innerHTML =totrun;
+		 alert(" select extra run");
+		 nbprev = 1;
+	 }
+	 else if(nbprev == 1)
+	 {
+		   totrun = totrun+run;;
+		 document.getElementById('runtd').innerHTML =totrun;
+		 nbprev = 0;
+	 }
+		
 	}
-
-
-		// Run after successful transaction
-	// Let's display the position data
-	function onSuccess(position) {
-		        
-		var latLng	= 
-				new google.maps.LatLng(
-						position.coords.latitude,
-	 					position.coords.longitude);	
-				
-		var mapOptions = {
-					center: latLng,
-					panControl: false,
-					zoomControl: true,
-					zoom: 16,
-					mapTypeId: google.maps.MapTypeId.ROADMAP
-				};
-				
-		var map = new google.maps.Map(
-								document.getElementById('map_holder'),
-								mapOptions	
-							);
-						
-		var marker = new google.maps.Marker({
-					position: latLng,
-					map: map
-				});
-				
-	}
-
-		// Run if we face an error 
-	// obtaining the position data
-	function onError(error) {
-		        
-		var errString	=	'';
-						
-		// Check to see if we have received an error code	  
-		if(error.code) {
-			// If we have, handle it by case
-			switch(error.code)
-			{
-				case 1: // PERMISSION_DENIED
-					errString	=	
-						'Unable to obtain the location information ' + 
-						'because the device does not have permission '+
-						'to the use that service.';
-				break;
-				case 2: // POSITION_UNAVAILABLE
-					errString	=	
-						'Unable to obtain the location information ' +
-						'because the device location could not be ' +
-						'determined.';
-				break;
-				case 3: // TIMEOUT
-					errString	=	
-						'Unable to obtain the location within the ' +
-						'specified time allocation.';
-				break;
-				default: // UNKOWN_ERROR
-					errString	=	
-						'Unable to obtain the location of the ' +
-						'device due to an unknown error.';
-				break;
-			}
-					  
+ function add(run)
+ {
+	  if(nbprev == 1)
+	 {
+		   totrun = totrun+run;;
+		 document.getElementById('runtd').innerHTML =totrun;
+		 nbprev = 0;
+	 }
+	 else
+	 {
+	   	totrun = totrun+run;;
+		 document.getElementById('runtd').innerHTML =totrun;
+		  totball = totball +1;
+		 document.getElementById('balltd').innerHTML =totball;
+	 	if(totball == 6)
+		{
+			alert(" over ");		
+			totover = totover +1;
+			document.getElementById('Overtd').innerHTML =totover;
+			totball = 0;
 		}
-					  
-		// Handle any errors we may face
-		var element = document.getElementById('map_holder');
-		element.innerHTML = errString;
-	}
+		
+	 }
+ }
+ </script>
+ </HTML>
 
-
-	</script>
-</head>
-<body>
-
-	<div id="map_holder"></div>
-
-</body>
-</html>
-<style type="text/css">
-	html { height: 100% }
-   body { height: 100%; margin: 0; padding: 0 }
-	#map_holder { height: 100%; width: 100%; }
-</style>
